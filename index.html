@@ -21,7 +21,7 @@
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
-    <div class="max-w-6xl mx-auto p-6">
+    <div class="max-w-7xl mx-auto p-6">
         <!-- Header -->
         <div class="flex justify-between items-center border-b pb-4 mb-6">
             <div>
@@ -197,8 +197,9 @@
                                 <tr>
                                     <th class="px-4 py-3 text-left">Surface</th>
                                     <th class="px-4 py-3 text-left">Lemma</th>
-                                    <th class="px-4 py-3 text-left">POS (POSTag)</th>
+                                    <th class="px-4 py-3 text-left">POSTag</th>
                                     <th class="px-4 py-3 text-left">LSJ</th>
+                                    <th class="px-4 py-3 text-right w-20">Actions</th>
                                 </tr>
                             </thead>
                             <tbody id="entries-body" class="divide-y"></tbody>
@@ -347,6 +348,7 @@
             clearForm();
         }
 
+        // ==================== ENTRY MANAGEMENT (updated with delete) ====================
         function renderEntries() {
             const tbody = document.getElementById("entries-body");
             tbody.innerHTML = "";
@@ -356,13 +358,36 @@
                 tr.innerHTML = `
                     <td class="px-4 py-3">${e.unicodeSurface || e.betaSurface}</td>
                     <td class="px-4 py-3 greek">${e.unicodeLemma}</td>
-                    <td class="px-4 py-3 font-mono text-xl tracking-[2px]">${e.pos}</td>
+                    <td class="px-4 py-3 font-mono text-xs tracking-[2px]">${e.pos}</td>
                     <td class="px-4 py-3 font-mono text-xs">${e.lsjUrn || "-"}</td>
+                    <td class="px-4 py-3 text-right">
+                        <button 
+                            onclick="event.stopPropagation(); removeEntry(${i});"
+                            class="text-red-500 hover:text-red-700 px-3 py-1 rounded-lg hover:bg-red-100 transition-colors">
+                            🗑️
+                        </button>
+                    </td>
                 `;
                 tr.onclick = () => editEntry(i);
                 tbody.appendChild(tr);
             });
             document.getElementById("entry-count").textContent = entries.length;
+        }
+
+        function removeEntry(index) {
+            const entry = entries[index];
+            const displayName = entry.unicodeSurface || entry.betaSurface || "this entry";
+            if (confirm(`Remove "${displayName}" from the list?`)) {
+                entries.splice(index, 1);
+                // If we were editing this entry, cancel the edit
+                if (currentEditIndex === index) {
+                    currentEditIndex = -1;
+                    clearForm();
+                } else if (currentEditIndex > index) {
+                    currentEditIndex--; // adjust index if needed
+                }
+                renderEntries();
+            }
         }
 
         function editEntry(index) {
@@ -406,40 +431,14 @@
             updatePOSTagPreview();
         }
 
-        // ==================== DOWNLOAD — EXACTLY AS YOU REQUESTED ====================
+        // ==================== DOWNLOAD — SAFARI-FRIENDLY VERSION ====================
         function downloadBothFiles() {
             const editor = document.getElementById("editor-name").value.trim() || "editor";
             const safeEditor = editor.replace(/[^a-zA-Z0-9]/g, "_");
             const date = new Date().toISOString().split("T")[0];
 
-            // Build rows (same for both files)
+            // Build rows (same data for both files)
             let rows = "";
-            entries.forEach(e => {
-                const ucForm = e.unicodeSurface || "";
-                const bcForm = e.betaSurface || "";
-                const ucLemma = e.unicodeLemma || "";
-                const bcLemma = e.betaLemma || "";
-                const lsj = e.lsjUrn || "";
-                const postag = e.pos || "---------";
-
-                rows += `${ucForm}\t${bcForm}\t${ucLemma}\t${bcLemma}\t${lsj}\t${postag}\n`;
-            });
-
-            // === File 1: Morphological Dictionary ===
-            const dictHeader = "uc-form\tbc-form\tuc-lemma\tbc-lemma\tlsj-urn\tpos-tag\n";
-            // We don't actually want a header
-            // const dictContent = dictHeader + rows;
-            const dictContent = rows;
-            const dictBlob = new Blob([dictContent], { type: "text/tab-separated-values" });
-            const dictUrl = URL.createObjectURL(dictBlob);
-            const a1 = document.createElement("a");
-            a1.href = dictUrl;
-            console.log("downloading first.For_morph…")
-            a1.download = `For_morphological_dictionary_${safeEditor}_${date}.tsv`;
-            a1.click();
-            URL.revokeObjectURL(dictUrl);
-
-            // === File 2: Editors Index ===
             let indexRows = "";
             entries.forEach(e => {
                 const ucForm = e.unicodeSurface || "";
@@ -450,21 +449,29 @@
                 const postag = e.pos || "---------";
                 const tokenUrn = e.textUrn || "";
 
+                rows += `${ucForm}\t${bcForm}\t${ucLemma}\t${bcLemma}\t${lsj}\t${postag}\n`;
                 indexRows += `${tokenUrn}\t${ucForm}\t${bcForm}\t${ucLemma}\t${bcLemma}\t${lsj}\t${postag}\n`;
             });
 
-            const indexHeader = "token-urn\tuc-form\tbc-form\tuc-lemma\tbc-lemma\tlsj-urn\tpos-tag\n";
-            //const indexContent = indexHeader + indexRows;
-            const indexContent = indexRows;
-            const indexBlob = new Blob([indexContent], { type: "text/tab-separated-values" });
-            const indexUrl = URL.createObjectURL(indexBlob);
-            const a2 = document.createElement("a");
-            a2.href = indexUrl;
+            // === File 1: Morphological Dictionary (downloads immediately) ===
+            const dictBlob = new Blob([rows], { type: "text/tab-separated-values" });
+            const dictUrl = URL.createObjectURL(dictBlob);
+            const a1 = document.createElement("a");
+            a1.href = dictUrl;
+            a1.download = `For_morphological_dictionary_${safeEditor}_${date}.tsv`;
+            a1.click();
+            URL.revokeObjectURL(dictUrl);
 
-            console.log("downloading second. For_morph…")
-            a2.download = `For_editors_index_${safeEditor}_${date}.tsv`;
-            a2.click();
-            URL.revokeObjectURL(indexUrl);
+            // === File 2: Editors Index (delayed for Safari) ===
+            setTimeout(() => {
+                const indexBlob = new Blob([indexRows], { type: "text/tab-separated-values" });
+                const indexUrl = URL.createObjectURL(indexBlob);
+                const a2 = document.createElement("a");
+                a2.href = indexUrl;
+                a2.download = `For_editors_index_${safeEditor}_${date}.tsv`;
+                a2.click();
+                URL.revokeObjectURL(indexUrl);
+            }, 1500); // 1.5 seconds — works reliably in Safari; you can tweak to 1000 or 2000 if desired
         }
 
         // ==================== INIT ====================
