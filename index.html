@@ -122,6 +122,7 @@
                                 </select>
                             </div>
 
+
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Case</label>
@@ -144,6 +145,8 @@
                                     </select>
                                 </div>
 
+
+
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Gender</label>
                                     <!--
@@ -159,6 +162,7 @@
                                         <option value="n">Neuter</option>
                                     </select>
                                 </div>
+
 
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Number</label>
@@ -176,6 +180,9 @@
                                     </select>
                                 </div>
 
+
+
+
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Degree</label>
                                     <!--
@@ -189,6 +196,7 @@
                                         <option value="s">Duperlative</option>
                                     </select>
                                 </div>
+
 
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Mood</label>
@@ -212,6 +220,10 @@
                                     </select>
                                 </div>
 
+
+
+
+
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Voice</label>
                                     <!--
@@ -230,6 +242,8 @@
                                         <option value="e">Medio-passive</option>
                                     </select>
                                 </div>
+
+
 
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Tense</label>
@@ -256,6 +270,8 @@
                                     </select>
                                 </div>
 
+
+
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Person</label>
                                     <!--
@@ -273,6 +289,7 @@
                                     </select>
                                 </div>
                             </div>
+
 
                             <div class="flex items-center justify-between pt-2 border-t">
                                 <div class="flex items-center gap-3">
@@ -366,15 +383,15 @@
         }
 
         // ==================== POSTAG MAPPING ====================
-        const posMap = {"-":"-","noun":"n","pronoun":"p","article":"t","adjective":"a","verb":"v","adverb":"r","preposition":"p","conjunction":"c","interjection":"i","punctuation":"u","irregular":"x"};
-        const personMap = {"-":"-","1":"1","2":"2","3":"3"};
+        const posMap = {"-":"-", "n":"n", "v":"v", "l":"l", "a":"a", "p":"p", "d":"d", "c":"c", "r":"r", "i":"i", "u":"u", "m":"m", "x":"x"};
+        const caseMap = {"-":"-", "n":"n", "g":"g", "d":"d", "a":"a", "v":"v"};
         const numberMap = {"-":"-","s":"s","d":"d","p":"p"};
-        const tenseMap = {"-":"-","pres":"p","impf":"i","fut":"f","aor":"a","perf":"r"};
-        const moodMap = {"-":"-","ind":"i","sub":"s","imp":"m","opt":"o","inf":"n","part":"p"};
-        const voiceMap = {"-":"-","act":"a","mid":"m","pas":"p"};
-        const caseMap = {"-":"-","nom":"n","gen":"g","dat":"d","acc":"a","voc":"v"};
-        const genderMap = {"-":"-","m":"m","f":"f","n":"n"};
         const degreeMap = {"-":"-","c":"c","s":"s"};
+        const moodMap = {"-":"-", "i":"i", "s":"s", "m":"m", "o":"o", "n":"n", "p":"p"};
+        const voiceMap = {"-":"-", "a":"a", "m":"m", "p":"p", "e":"e"};
+        const tenseMap = {"-":"-", "p":"p", "a":"a", "f":"f", "i":"i", "r":"r", "l":"l", "t":"t"};
+        const genderMap = {"-":"-","m":"m","f":"f","n":"n"};
+        const personMap = {"-":"-","1":"1","2":"2","3":"3"};
 
         function buildPOSTag() {
             const posVal = document.getElementById("pos-select").value;
@@ -405,21 +422,21 @@
             const allSelects = ["case","gender","number","degree","mood","voice","tense","person"].map(id => document.getElementById(id+"-select"));
             allSelects.forEach(s => s.disabled = true);
 
-            if (["noun","pronoun","article"].includes(pos)) {
+            if (["n","p","l"].includes(pos)) {
                 ["case","gender","number"].forEach(id => document.getElementById(id+"-select").disabled = false);
-            } else if (pos === "adjective") {
+            } else if (pos === "a") {
                 ["case","gender","number","degree"].forEach(id => document.getElementById(id+"-select").disabled = false);
-            } else if (pos === "verb") {
+            } else if (pos === "v") {
                 document.getElementById("mood-select").disabled = false;
                 const mood = document.getElementById("mood-select").value;
-                if (["ind","sub","imp","opt"].includes(mood)) {
+                if (["i","s","m","o"].includes(mood)) {
                     ["voice","tense","person","number"].forEach(id => document.getElementById(id+"-select").disabled = false);
-                } else if (mood === "inf") {
+                } else if (mood === "n") {
                     ["voice","tense"].forEach(id => document.getElementById(id+"-select").disabled = false);
-                } else if (mood === "part") {
-                    ["voice","tense","person","case","number"].forEach(id => document.getElementById(id+"-select").disabled = false);
+                } else if (mood === "p") {
+                    ["voice","tense","person","case","number", "gender"].forEach(id => document.getElementById(id+"-select").disabled = false);
                 }
-            } else if (pos === "adverb") {
+            } else if (pos === "d") {
                 document.getElementById("degree-select").disabled = false;
             }
             updatePOSTagPreview();
