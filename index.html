@@ -232,11 +232,12 @@
                     if (i < input.length) {
                         let next = input[i];
                         let base = result.slice(-1);
-                        if (next === ")") { result = result.slice(0,-1) + (base + "\u0301").normalize("NFC"); i++; }
-                        else if (next === "(") { result = result.slice(0,-1) + (base + "\u0300").normalize("NFC"); i++; }
-                        else if (next === "/") { result = result.slice(0,-1) + (base + "\u0342").normalize("NFC"); i++; }
-                        else if (next === "=") { result = result.slice(0,-1) + (base + "\u0345").normalize("NFC"); i++; }
-                        else if (next === "|") { result = result.slice(0,-1) + (base + "\u0308").normalize("NFC"); i++; }
+                        if (next === ")") { result = result.slice(0,-1) + (base + "\u0313").normalize("NFC"); i++; }
+                        else if (next === "(") { result = result.slice(0,-1) + (base + "\u0314").normalize("NFC"); i++; }
+                        else if (next === "\\") { result = result.slice(0,-1) + (base + "\u0340").normalize("NFC"); i++; }
+                        else if (next === "/") { result = result.slice(0,-1) + (base + "\u0301").normalize("NFC"); i++; }
+                        else if (next === "=") { result = result.slice(0,-1) + (base + "\u0342").normalize("NFC"); i++; }
+                        else if (next === "|") { result = result.slice(0,-1) + (base + "\u0345").normalize("NFC"); i++; }
                     }
                 } else {
                     result += ch; i++;
