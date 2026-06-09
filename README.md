@@ -11,4 +11,8 @@ A one-page web-app for documenting the morphology and lexicography of a Greek wo
 - BetaCode ↔ Unicode conversion (with terminal sigma)
 - Intelligent POS tag builder (dynamic menu enabling)
 - Click-to-edit entries
-- Two-file TSV export for Dramaturg.jl
+- Two-file TSV export for [Dramaturg.jl](https://github.com/Eumaeus/Dramaturg.jl)
+
+This work is part of a research collaboration with Lindsey Butler of Furman University. It is also based on three decades of collaboration with Neel Smith of the College of the Holy Cross.
+
+This project has benefited enormously from close and sustained collaboration with **Grok**, an AI model built by [xAI](https://x.ai/).
