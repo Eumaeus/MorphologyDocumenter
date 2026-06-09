@@ -78,12 +78,12 @@
 
                     <!-- Intelligent POS Tag Builder -->
                     <div>
-                        <label class="block text-sm font-medium text-slate-700 mb-2">Morphological Features (POS Tag)</label>
+                        <label class="block text-sm font-medium text-slate-700 mb-2">Morphological Features (POSTag)</label>
                         <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
-                            <!-- Part of Speech -->
+                            <!-- Part of Speech (category only) -->
                             <div class="flex flex-col">
                                 <label class="text-xs font-medium text-slate-500 mb-1">Part of Speech</label>
-                                <select id="pos-select" onchange="updateEnabledMenus()" class="px-3 py-2 border border-slate-300 rounded-lg">
+                                <select id="pos-select" onchange="updateMenusAndPreview()" class="px-3 py-2 border border-slate-300 rounded-lg">
                                     <option value="-">-</option>
                                     <option value="noun">Noun</option>
                                     <option value="pronoun">Pronoun</option>
@@ -103,32 +103,32 @@
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Case</label>
-                                    <select id="case-select" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
+                                    <select id="case-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
                                         <option value="-">-</option><option value="nom">nom</option><option value="gen">gen</option>
                                         <option value="dat">dat</option><option value="acc">acc</option><option value="voc">voc</option>
                                     </select>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Gender</label>
-                                    <select id="gender-select" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
+                                    <select id="gender-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
                                         <option value="-">-</option><option value="m">m</option><option value="f">f</option><option value="n">n</option>
                                     </select>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Number</label>
-                                    <select id="number-select" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
+                                    <select id="number-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
                                         <option value="-">-</option><option value="s">s</option><option value="d">d</option><option value="p">p</option>
                                     </select>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Degree</label>
-                                    <select id="degree-select" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
+                                    <select id="degree-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
                                         <option value="-">-</option><option value="c">comparative</option><option value="s">superlative</option>
                                     </select>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Mood</label>
-                                    <select id="mood-select" onchange="updateEnabledMenus()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
+                                    <select id="mood-select" onchange="updateMenusAndPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
                                         <option value="-">-</option><option value="ind">indicative</option><option value="sub">subjunctive</option>
                                         <option value="imp">imperative</option><option value="opt">optative</option><option value="inf">infinitive</option>
                                         <option value="part">participle</option>
@@ -136,29 +136,31 @@
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Voice</label>
-                                    <select id="voice-select" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
+                                    <select id="voice-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
                                         <option value="-">-</option><option value="act">active</option><option value="mid">middle</option><option value="pas">passive</option>
                                     </select>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Tense</label>
-                                    <select id="tense-select" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
+                                    <select id="tense-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
                                         <option value="-">-</option><option value="pres">present</option><option value="impf">imperfect</option>
                                         <option value="fut">future</option><option value="aor">aorist</option><option value="perf">perfect</option>
                                     </select>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Person</label>
-                                    <select id="person-select" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
+                                    <select id="person-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
                                         <option value="-">-</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
                                     </select>
                                 </div>
                             </div>
 
-                            <!-- Preview -->
+                            <!-- Live POSTag preview -->
                             <div class="flex items-center justify-between pt-2 border-t">
-                                <span class="font-mono text-xl tracking-widest bg-white border px-4 py-2 rounded-lg" id="pos-preview">v1sfim---</span>
-                                <button onclick="validateAndSetPos()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium rounded-xl">Validate &amp; Use Tag</button>
+                                <div class="flex items-center gap-3">
+                                    <span class="text-xs font-medium text-slate-500">POSTag</span>
+                                    <span id="pos-preview" class="font-mono text-2xl tracking-[3px] bg-white border border-slate-300 px-5 py-2 rounded-2xl">---------</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -191,7 +193,7 @@
                                 <tr>
                                     <th class="px-4 py-3 text-left">Surface</th>
                                     <th class="px-4 py-3 text-left">Lemma</th>
-                                    <th class="px-4 py-3 text-left">POS</th>
+                                    <th class="px-4 py-3 text-left">POS (POSTag)</th>
                                     <th class="px-4 py-3 text-left">LSJ</th>
                                 </tr>
                             </thead>
@@ -209,14 +211,14 @@
         let entries = [];
         let currentEditIndex = -1;
 
-        // ==================== BETA CODE CONVERTER (with terminal sigma) ====================
+        // ==================== BETA CODE → UNICODE (terminal sigma) ====================
         function betaToUnicode(beta) {
             if (!beta || typeof beta !== "string") return "";
             let input = beta.trim();
             let result = "";
             let i = 0;
 
-            const letterMap = { /* same map as before – omitted for brevity but identical */ 
+            const letterMap = {
                 "a":"α","b":"β","g":"γ","d":"δ","e":"ε","z":"ζ","h":"η","q":"θ","i":"ι","k":"κ","l":"λ","m":"μ","n":"ν","c":"ξ","o":"ο","p":"π","r":"ρ","s":"σ","t":"τ","u":"υ","f":"φ","x":"χ","y":"ψ","w":"ω",
                 "A":"Α","B":"Β","G":"Γ","D":"Δ","E":"Ε","Z":"Ζ","H":"Η","Q":"Θ","I":"Ι","K":"Κ","L":"Λ","M":"Μ","N":"Ν","C":"Ξ","O":"Ο","P":"Π","R":"Ρ","S":"Σ","T":"Τ","U":"Υ","F":"Φ","X":"Χ","Y":"Ψ","W":"Ω"
             };
@@ -241,10 +243,8 @@
                 }
             }
 
-            // TERMINAL SIGMA RULE (as requested)
-            if (result.endsWith("σ")) {
-                result = result.slice(0, -1) + "ς";
-            }
+            // TERMINAL SIGMA
+            if (result.endsWith("σ")) result = result.slice(0, -1) + "ς";
             return result;
         }
 
@@ -275,23 +275,59 @@
             }
         }
 
-        // ==================== INTELLIGENT POS MENUS ====================
+        // ==================== POSTAG MAPPING (9-character Perseus-style) ====================
+        const posMap = {
+            "-": "-", "noun": "n", "pronoun": "p", "article": "t", "adjective": "a",
+            "verb": "v", "adverb": "r", "preposition": "p", "conjunction": "c",
+            "interjection": "i", "punctuation": "u", "irregular": "x"
+        };
+        const personMap = {"-":"-","1":"1","2":"2","3":"3"};
+        const numberMap = {"-":"-","s":"s","d":"d","p":"p"};
+        const tenseMap = {"-":"-","pres":"p","impf":"i","fut":"f","aor":"a","perf":"r"};
+        const moodMap = {"-":"-","ind":"i","sub":"s","imp":"m","opt":"o","inf":"n","part":"p"};
+        const voiceMap = {"-":"-","act":"a","mid":"m","pas":"p"};
+        const caseMap = {"-":"-","nom":"n","gen":"g","dat":"d","acc":"a","voc":"v"};
+        const genderMap = {"-":"-","m":"m","f":"f","n":"n"};
+        const degreeMap = {"-":"-","c":"c","s":"s"};
+
+        function buildPOSTag() {
+            const posVal = document.getElementById("pos-select").value;
+            if (posVal === "-") return "---------";
+
+            let tag = posMap[posVal] || "-";
+
+            tag += personMap[document.getElementById("person-select").value] || "-";
+            tag += numberMap[document.getElementById("number-select").value] || "-";
+            tag += tenseMap[document.getElementById("tense-select").value] || "-";
+            tag += moodMap[document.getElementById("mood-select").value] || "-";
+            tag += voiceMap[document.getElementById("voice-select").value] || "-";
+            tag += caseMap[document.getElementById("case-select").value] || "-";
+            tag += genderMap[document.getElementById("gender-select").value] || "-";
+            tag += degreeMap[document.getElementById("degree-select").value] || "-";
+
+            return tag;
+        }
+
+        function updatePOSTagPreview() {
+            document.getElementById("pos-preview").textContent = buildPOSTag();
+        }
+
+        function updateMenusAndPreview() {
+            updateEnabledMenus();
+            updatePOSTagPreview();
+        }
+
+        // ==================== INTELLIGENT MENU ENABLING ====================
         function updateEnabledMenus() {
             const pos = document.getElementById("pos-select").value;
             const allSelects = ["case","gender","number","degree","mood","voice","tense","person"].map(id => document.getElementById(id+"-select"));
 
-            // disable everything first
             allSelects.forEach(s => s.disabled = true);
 
             if (["noun","pronoun","article"].includes(pos)) {
-                document.getElementById("case-select").disabled = false;
-                document.getElementById("gender-select").disabled = false;
-                document.getElementById("number-select").disabled = false;
+                ["case","gender","number"].forEach(id => document.getElementById(id+"-select").disabled = false);
             } else if (pos === "adjective") {
-                document.getElementById("case-select").disabled = false;
-                document.getElementById("gender-select").disabled = false;
-                document.getElementById("number-select").disabled = false;
-                document.getElementById("degree-select").disabled = false;
+                ["case","gender","number","degree"].forEach(id => document.getElementById(id+"-select").disabled = false);
             } else if (pos === "verb") {
                 document.getElementById("mood-select").disabled = false;
                 const mood = document.getElementById("mood-select").value;
@@ -305,24 +341,15 @@
             } else if (pos === "adverb") {
                 document.getElementById("degree-select").disabled = false;
             }
-            // Preposition, Conjunction, Interjection, Punctuation, Irregular → nothing enabled
-            updatePosPreview();
-        }
-
-        function updatePosPreview() {
-            // Simple derived preview (you can expand this if needed)
-            const pos = document.getElementById("pos-select").value || "-";
-            document.getElementById("pos-preview").textContent = pos.toUpperCase().slice(0,1) + "--------";
-        }
-
-        function validateAndSetPos() {
-            // For now just refreshes – you can add more validation later
-            updatePosPreview();
-            alert("POS tag validated and ready for use.");
+            // Preposition / Conjunction / Interjection / Punctuation / Irregular stay disabled
+            updatePOSTagPreview();
         }
 
         // ==================== ENTRY MANAGEMENT ====================
         function addOrUpdateEntry() {
+            const postag = buildPOSTag();
+            const posCategory = document.getElementById("pos-select").value;
+
             const entry = {
                 editor: document.getElementById("editor-name").value,
                 textUrn: document.getElementById("text-urn").value,
@@ -331,7 +358,8 @@
                 betaLemma: document.getElementById("beta-lemma").value,
                 unicodeLemma: document.getElementById("unicode-lemma").value,
                 lsjUrn: document.getElementById("lsj-urn").value,
-                pos: document.getElementById("pos-select").value,
+                posCategory: posCategory,          // for menu logic on edit
+                pos: postag,                       // full Perseus POSTag (used in table + TSV)
                 case: document.getElementById("case-select").value,
                 gender: document.getElementById("gender-select").value,
                 number: document.getElementById("number-select").value,
@@ -362,7 +390,7 @@
                 tr.innerHTML = `
                     <td class="px-4 py-3">${e.unicodeSurface || e.betaSurface}</td>
                     <td class="px-4 py-3 greek">${e.unicodeLemma}</td>
-                    <td class="px-4 py-3 font-mono">${e.pos}</td>
+                    <td class="px-4 py-3 font-mono text-xl tracking-[2px]">${e.pos}</td>
                     <td class="px-4 py-3 font-mono text-xs">${e.lsjUrn || "-"}</td>
                 `;
                 tr.onclick = () => editEntry(i);
@@ -374,13 +402,15 @@
         function editEntry(index) {
             const e = entries[index];
             currentEditIndex = index;
+
             document.getElementById("editor-name").value = e.editor;
             document.getElementById("text-urn").value = e.textUrn;
             document.getElementById("beta-surface").value = e.betaSurface;
             document.getElementById("beta-lemma").value = e.betaLemma;
             updateUnicodeFields();
             document.getElementById("lsj-urn").value = e.lsjUrn;
-            document.getElementById("pos-select").value = e.pos || "-";
+
+            document.getElementById("pos-select").value = e.posCategory || "-";
             document.getElementById("case-select").value = e.case || "-";
             document.getElementById("gender-select").value = e.gender || "-";
             document.getElementById("number-select").value = e.number || "-";
@@ -390,7 +420,7 @@
             document.getElementById("tense-select").value = e.tense || "-";
             document.getElementById("person-select").value = e.person || "-";
 
-            updateEnabledMenus();
+            updateEnabledMenus();   // also updates preview
             document.getElementById("button-text").textContent = "UPDATE ENTRY";
         }
 
@@ -409,40 +439,40 @@
             currentEditIndex = -1;
             document.getElementById("button-text").textContent = "ADD TO LIST";
             updateUnicodeFields();
+            updatePOSTagPreview();
         }
 
         // ==================== DOWNLOAD (two files) ====================
         function downloadBothFiles() {
-            const date = new Date().toISOString().split("T")[0]; // YYYY-MM-DD
+            const date = new Date().toISOString().split("T")[0];
 
-            // File 1: Editor Index (your requested name)
-            let tsv1 = "editor\ttext_urn\tbeta_surface\tunicode_surface\tbeta_lemma\tunicode_lemma\tlsj_urn\tpos\tcase\tgender\tnumber\tdegree\tmood\tvoice\ttense\tperson\n";
+            let tsv = "editor\ttext_urn\tbeta_surface\tunicode_surface\tbeta_lemma\tunicode_lemma\tlsj_urn\tpos\tcase\tgender\tnumber\tdegree\tmood\tvoice\ttense\tperson\n";
             entries.forEach(e => {
-                tsv1 += `${e.editor}\t${e.textUrn}\t${e.betaSurface}\t${e.unicodeSurface}\t${e.betaLemma}\t${e.unicodeLemma}\t${e.lsjUrn}\t${e.pos}\t${e.case}\t${e.gender}\t${e.number}\t${e.degree}\t${e.mood}\t${e.voice}\t${e.tense}\t${e.person}\n`;
+                tsv += `${e.editor}\t${e.textUrn}\t${e.betaSurface}\t${e.unicodeSurface}\t${e.betaLemma}\t${e.unicodeLemma}\t${e.lsjUrn}\t${e.pos}\t${e.case}\t${e.gender}\t${e.number}\t${e.degree}\t${e.mood}\t${e.voice}\t${e.tense}\t${e.person}\n`;
             });
 
-            const blob1 = new Blob([tsv1], { type: "text/tab-separated-values" });
-            const url1 = URL.createObjectURL(blob1);
+            const blob = new Blob([tsv], { type: "text/tab-separated-values" });
+            const url = URL.createObjectURL(blob);
+
+            // File 1
             const a1 = document.createElement("a");
-            a1.href = url1;
+            a1.href = url;
             a1.download = `For_editor_index-${date}.tsv`;
             a1.click();
-            URL.revokeObjectURL(url1);
 
-            // File 2: Full morphological data (second file as requested)
-            const blob2 = new Blob([tsv1], { type: "text/tab-separated-values" }); // same content for now; you can customize later
-            const url2 = URL.createObjectURL(blob2);
+            // File 2
             const a2 = document.createElement("a");
-            a2.href = url2;
+            a2.href = url;
             a2.download = `morphological_data-${date}.tsv`;
             a2.click();
-            URL.revokeObjectURL(url2);
+
+            URL.revokeObjectURL(url);
         }
 
         // ==================== INIT ====================
         window.onload = () => {
             loadLsjUrns();
-            // Tailwind script already loaded
+            updatePOSTagPreview();
         };
     </script>
 </body>
