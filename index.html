@@ -554,6 +554,7 @@
             const editor = document.getElementById("editor-name").value.trim() || "editor";
             const safeEditor = editor.replace(/[^a-zA-Z0-9]/g, "_");
             const date = new Date().toISOString().split("T")[0];
+            const longerdate = date + "-" + new Date().toISOString().split("T")[1].split(":")[0];
 
             // Build rows (same data for both files)
             let rows = "";
@@ -576,7 +577,7 @@
             const dictUrl = URL.createObjectURL(dictBlob);
             const a1 = document.createElement("a");
             a1.href = dictUrl;
-            a1.download = `For_morphological_dictionary_${safeEditor}_${date}.tsv`;
+            a1.download = `${safeEditor}_For_morphological_dictionary_${longerdate}.tsv`;
             a1.click();
             URL.revokeObjectURL(dictUrl);
 
@@ -586,7 +587,7 @@
                 const indexUrl = URL.createObjectURL(indexBlob);
                 const a2 = document.createElement("a");
                 a2.href = indexUrl;
-                a2.download = `For_editors_index_${safeEditor}_${date}.tsv`;
+                a2.download = `${safeEditor}_For_editors_index_${longerdate}.tsv`;
                 a2.click();
                 URL.revokeObjectURL(indexUrl);
             }, 1500); // 1.5 seconds — works reliably in Safari; you can tweak to 1000 or 2000 if desired
