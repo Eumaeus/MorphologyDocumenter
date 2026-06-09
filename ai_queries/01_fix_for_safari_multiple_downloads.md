@@ -22,3 +22,7 @@ As users add items to the list, you've provided the ability to click on a list-i
 I would like an obvious way to remove an item from the list.
 
 And those are the outstanding issues that I can think of now!
+
+----
+
+Those changes work perfectly. Thank you! I'll continue to use it, working from a list of forms that will ensure that the POS-tag codes are working correctly. I'll come back if I need more help.
