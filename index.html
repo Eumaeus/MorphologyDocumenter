@@ -90,73 +90,186 @@
                         <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
                             <div class="flex flex-col">
                                 <label class="text-xs font-medium text-slate-500 mb-1">Part of Speech</label>
+                                <!--
+                                ### 1:  part of speech
+                                - n noun
+                                - v verb
+                                - t participle
+                                - a adjective
+                                - d adverb
+                                - c conjunction
+                                - r preposition
+                                - p pronoun
+                                - m numeral
+                                - i interjection
+                                - e exclamation
+                                - u punctuation
+                                -->
                                 <select id="pos-select" onchange="updateMenusAndPreview()" class="px-3 py-2 border border-slate-300 rounded-lg">
                                     <option value="-">-</option>
-                                    <option value="noun">Noun</option>
-                                    <option value="pronoun">Pronoun</option>
-                                    <option value="article">Article</option>
-                                    <option value="adjective">Adjective</option>
-                                    <option value="verb">Verb</option>
-                                    <option value="adverb">Adverb</option>
-                                    <option value="preposition">Preposition</option>
-                                    <option value="conjunction">Conjunction</option>
-                                    <option value="interjection">Interjection</option>
-                                    <option value="punctuation">Punctuation</option>
-                                    <option value="irregular">Irregular</option>
+                                    <option value="n">Noun</option>
+                                    <option value="v">Verb</option>
+                                    <option value="l">Article</option>
+                                    <option value="a">Adjective</option>
+                                    <option value="p">Pronoun</option>
+                                    <option value="d">Adverb</option>
+                                    <option value="c">Conjunction</option>
+                                    <option value="r">Preposition</option>
+                                    <option value="i">Interjection</option>
+                                    <option value="u">Punctuation</option>
+                                    <option value="m">Numeral</option>
+                                    <option value="x">Irregular</option>
                                 </select>
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Case</label>
+                                    <!--
+                                    ### 8:  case
+                                    - g genitive
+                                    - d dative
+                                    - a accusative
+                                    - b ablative
+                                    - v vocative
+                                    - l locative
+                                    -->
                                     <select id="case-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
-                                        <option value="-">-</option><option value="nom">nominative</option><option value="gen">genitive</option>
-                                        <option value="dat">dative</option><option value="acc">accusative</option><option value="voc">vocative</option>
+                                        <option value="-">-</option>
+                                        <option value="n">Nominative</option>
+                                        <option value="g">Genitive</option>
+                                        <option value="d">Dative</option>
+                                        <option value="a">Accusative</option>
+                                        <option value="v">Vocative</option>
                                     </select>
                                 </div>
+
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Gender</label>
+                                    <!--
+                                    ### 7:  gender
+                                    - m masculine
+                                    - f feminine
+                                    - n neuter
+                                    -->
                                     <select id="gender-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
-                                        <option value="-">-</option><option value="m">masculine</option><option value="f">feminine</option><option value="n">neuter</option>
+                                        <option value="-">-</option>
+                                        <option value="m">Masculine</option>
+                                        <option value="f">Feminine</option>
+                                        <option value="n">Neuter</option>
                                     </select>
                                 </div>
+
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Number</label>
+                                    <!--
+                                    ### 3:  number
+                                    - s singular
+                                    - d dual
+                                    - p plural
+                                    -->
                                     <select id="number-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
-                                        <option value="-">-</option><option value="s">singular</option><option value="d">dual</option><option value="p">plural</option>
+                                        <option value="-">-</option>
+                                        <option value="s">Singular</option>
+                                        <option value="d">Dual</option>
+                                        <option value="p">Plural</option>
                                     </select>
                                 </div>
+
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Degree</label>
+                                    <!--
+                                    ### 9:  degree
+                                    - c comparative
+                                    - s superlative
+                                    -->
                                     <select id="degree-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
-                                        <option value="-">-</option><option value="c">comparative</option><option value="s">superlative</option>
+                                        <option value="-">-</option>
+                                        <option value="c">Comparative</option>
+                                        <option value="s">Duperlative</option>
                                     </select>
                                 </div>
+
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Mood</label>
+                                    <!--
+                                    ### 5:  mood
+                                    - i indicative
+                                    - s subjunctive
+                                    - o optative
+                                    - n infinitive
+                                    - m imperative
+                                    - p participle
+                                    -->
                                     <select id="mood-select" onchange="updateMenusAndPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
-                                        <option value="-">-</option><option value="ind">indicative</option><option value="sub">subjunctive</option>
-                                        <option value="imp">imperative</option><option value="opt">optative</option><option value="inf">infinitive</option>
-                                        <option value="part">participle</option>
+                                        <option value="-">-</option>
+                                        <option value="i">Indicative</option>
+                                        <option value="s">Subjunctive</option>
+                                        <option value="m">Imperative</option>
+                                        <option value="o">Optative</option>
+                                        <option value="n">Infinitive</option>
+                                        <option value="p">Participle</option>
                                     </select>
                                 </div>
+
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Voice</label>
+                                    <!--
+                                    ### 6:  voice
+                                        
+                                    - a active
+                                    - p passive
+                                    - m middle
+                                    - e medio-passive
+                                    -->
                                     <select id="voice-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
-                                        <option value="-">-</option><option value="act">active</option><option value="mid">middle</option><option value="pas">passive</option>
+                                        <option value="-">-</option>
+                                        <option value="a">Active</option>
+                                        <option value="m">Middle</option>
+                                        <option value="p">Passive</option>
+                                        <option value="e">Medio-passive</option>
                                     </select>
                                 </div>
+
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Tense</label>
+                                    <!-- 
+                                    ### 4:  tense
+                                        
+                                    - p   present
+                                    - i   imperfect
+                                    - r   perfect
+                                    - l   pluperfect
+                                    - t   future perfect
+                                    - f   future
+                                    - a   aorist
+                                    -->
                                     <select id="tense-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
-                                        <option value="-">-</option><option value="pres">present</option><option value="impf">imperfect</option>
-                                        <option value="fut">future</option><option value="aor">aorist</option><option value="perf">perfect</option><option value="plpf">pluperfect</option><option value="futperf">future perfect</option>
+                                        <option value="-">-</option>
+                                        <option value="p">Present</option>
+                                        <option value="a">Aorist</option>
+                                        <option value="f">Future</option>
+                                        <option value="i">Imperfect</option>
+                                        <option value="r">Perfect</option>
+                                        <option value="l">Pluperfect</option>
+                                        <option value="t">Future perfect</option>
                                     </select>
                                 </div>
+
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Person</label>
+                                    <!--
+                                    ### 2:  person
+                                        
+                                    - 1 first person
+                                    - 2 second person
+                                    - 3 third person
+                                    -->                                    
                                     <select id="person-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
-                                        <option value="-">-</option><option value="1">1</option><option value="2">2</option><option value="3">3</option>
+                                        <option value="-">-</option>
+                                        <option value="1">First person</option>
+                                        <option value="2">Second person</option>
+                                        <option value="3">Third person</option>
                                     </select>
                                 </div>
                             </div>
