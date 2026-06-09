@@ -9,7 +9,6 @@
         @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&display=swap');
         body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         .greek { font-family: 'EB Garamond', serif; font-size: 1.25rem; line-height: 1.4; }
-        .tag-input { font-family: monospace; letter-spacing: 1px; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
@@ -51,7 +50,7 @@
                 <div class="space-y-5">
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">BetaCode Surface Form</label>
-                        <input id="beta-surface" type="text" placeholder="a)popardh/somai" class="w-full px-3 py-3 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-400 font-mono text-lg" oninput="updateUnicodeFields()">
+                        <input id="beta-surface" type="text" placeholder="a)popardh/somai" class="w-full px-3 py-3 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-400 font-mono text-lg">
                         <div class="mt-2 flex items-center gap-2">
                             <span class="text-xs text-slate-500">Unicode Surface:</span>
                             <input id="unicode-surface" readonly class="greek flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xl">
@@ -60,7 +59,7 @@
 
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-1">BetaCode Lemma</label>
-                        <input id="beta-lemma" type="text" placeholder="pe/rdomai" class="w-full px-3 py-3 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-400 font-mono text-lg" oninput="updateUnicodeFields()">
+                        <input id="beta-lemma" type="text" placeholder="pe/rdomai" class="w-full px-3 py-3 border border-slate-300 rounded-lg focus:outline-none focus:border-indigo-400 font-mono text-lg">
                         <div class="mt-2 flex items-center gap-2">
                             <span class="text-xs text-slate-500">Unicode Lemma:</span>
                             <input id="unicode-lemma" readonly class="greek flex-1 px-3 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xl">
@@ -80,7 +79,6 @@
                     <div>
                         <label class="block text-sm font-medium text-slate-700 mb-2">Morphological Features (POSTag)</label>
                         <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-4">
-                            <!-- Part of Speech (category only) -->
                             <div class="flex flex-col">
                                 <label class="text-xs font-medium text-slate-500 mb-1">Part of Speech</label>
                                 <select id="pos-select" onchange="updateMenusAndPreview()" class="px-3 py-2 border border-slate-300 rounded-lg">
@@ -99,7 +97,6 @@
                                 </select>
                             </div>
 
-                            <!-- Conditional menus -->
                             <div class="grid grid-cols-2 gap-4">
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Case</label>
@@ -155,7 +152,6 @@
                                 </div>
                             </div>
 
-                            <!-- Live POSTag preview -->
                             <div class="flex items-center justify-between pt-2 border-t">
                                 <div class="flex items-center gap-3">
                                     <span class="text-xs font-medium text-slate-500">POSTag</span>
@@ -165,7 +161,6 @@
                         </div>
                     </div>
 
-                    <!-- Action buttons -->
                     <div class="flex gap-3 pt-4 border-t">
                         <button onclick="addOrUpdateEntry()" id="add-button"
                                 class="flex-1 py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-medium rounded-2xl text-lg flex items-center justify-center gap-2">
@@ -211,7 +206,7 @@
         let entries = [];
         let currentEditIndex = -1;
 
-        // ==================== BETA CODE → UNICODE (terminal sigma) ====================
+        // ==================== BETA CODE → UNICODE (YOUR UPDATED VERSION) ====================
         function betaToUnicode(beta) {
             if (!beta || typeof beta !== "string") return "";
             let input = beta.trim();
@@ -270,18 +265,14 @@
             const val = document.getElementById("lsj-urn").value.trim();
             if (!val) { el.innerHTML = ""; return; }
             if (lsjUrns.has(val)) {
-                el.innerHTML = `<span class="text-emerald-600">✓ valid</span>`;
+                el.innerHTML = `<span class="text-emerald-600">valid</span>`;
             } else {
                 el.innerHTML = `<span class="text-red-500">invalid</span>`;
             }
         }
 
-        // ==================== POSTAG MAPPING (9-character Perseus-style) ====================
-        const posMap = {
-            "-": "-", "noun": "n", "pronoun": "p", "article": "t", "adjective": "a",
-            "verb": "v", "adverb": "r", "preposition": "p", "conjunction": "c",
-            "interjection": "i", "punctuation": "u", "irregular": "x"
-        };
+        // ==================== POSTAG MAPPING ====================
+        const posMap = {"-":"-","noun":"n","pronoun":"p","article":"t","adjective":"a","verb":"v","adverb":"r","preposition":"p","conjunction":"c","interjection":"i","punctuation":"u","irregular":"x"};
         const personMap = {"-":"-","1":"1","2":"2","3":"3"};
         const numberMap = {"-":"-","s":"s","d":"d","p":"p"};
         const tenseMap = {"-":"-","pres":"p","impf":"i","fut":"f","aor":"a","perf":"r"};
@@ -294,9 +285,7 @@
         function buildPOSTag() {
             const posVal = document.getElementById("pos-select").value;
             if (posVal === "-") return "---------";
-
             let tag = posMap[posVal] || "-";
-
             tag += personMap[document.getElementById("person-select").value] || "-";
             tag += numberMap[document.getElementById("number-select").value] || "-";
             tag += tenseMap[document.getElementById("tense-select").value] || "-";
@@ -305,7 +294,6 @@
             tag += caseMap[document.getElementById("case-select").value] || "-";
             tag += genderMap[document.getElementById("gender-select").value] || "-";
             tag += degreeMap[document.getElementById("degree-select").value] || "-";
-
             return tag;
         }
 
@@ -318,11 +306,9 @@
             updatePOSTagPreview();
         }
 
-        // ==================== INTELLIGENT MENU ENABLING ====================
         function updateEnabledMenus() {
             const pos = document.getElementById("pos-select").value;
             const allSelects = ["case","gender","number","degree","mood","voice","tense","person"].map(id => document.getElementById(id+"-select"));
-
             allSelects.forEach(s => s.disabled = true);
 
             if (["noun","pronoun","article"].includes(pos)) {
@@ -342,7 +328,6 @@
             } else if (pos === "adverb") {
                 document.getElementById("degree-select").disabled = false;
             }
-            // Preposition / Conjunction / Interjection / Punctuation / Irregular stay disabled
             updatePOSTagPreview();
         }
 
@@ -359,8 +344,8 @@
                 betaLemma: document.getElementById("beta-lemma").value,
                 unicodeLemma: document.getElementById("unicode-lemma").value,
                 lsjUrn: document.getElementById("lsj-urn").value,
-                posCategory: posCategory,          // for menu logic on edit
-                pos: postag,                       // full Perseus POSTag (used in table + TSV)
+                posCategory: posCategory,
+                pos: postag,
                 case: document.getElementById("case-select").value,
                 gender: document.getElementById("gender-select").value,
                 number: document.getElementById("number-select").value,
@@ -403,14 +388,12 @@
         function editEntry(index) {
             const e = entries[index];
             currentEditIndex = index;
-
             document.getElementById("editor-name").value = e.editor;
             document.getElementById("text-urn").value = e.textUrn;
             document.getElementById("beta-surface").value = e.betaSurface;
             document.getElementById("beta-lemma").value = e.betaLemma;
             updateUnicodeFields();
             document.getElementById("lsj-urn").value = e.lsjUrn;
-
             document.getElementById("pos-select").value = e.posCategory || "-";
             document.getElementById("case-select").value = e.case || "-";
             document.getElementById("gender-select").value = e.gender || "-";
@@ -421,7 +404,7 @@
             document.getElementById("tense-select").value = e.tense || "-";
             document.getElementById("person-select").value = e.person || "-";
 
-            updateEnabledMenus();   // also updates preview
+            updateEnabledMenus();
             document.getElementById("button-text").textContent = "UPDATE ENTRY";
         }
 
@@ -443,36 +426,71 @@
             updatePOSTagPreview();
         }
 
-        // ==================== DOWNLOAD (two files) ====================
+        // ==================== DOWNLOAD — EXACTLY AS YOU REQUESTED ====================
         function downloadBothFiles() {
+            const editor = document.getElementById("editor-name").value.trim() || "editor";
+            const safeEditor = editor.replace(/[^a-zA-Z0-9]/g, "_");
             const date = new Date().toISOString().split("T")[0];
 
-            let tsv = "editor\ttext_urn\tbeta_surface\tunicode_surface\tbeta_lemma\tunicode_lemma\tlsj_urn\tpos\tcase\tgender\tnumber\tdegree\tmood\tvoice\ttense\tperson\n";
+            // Build rows (same for both files)
+            let rows = "";
             entries.forEach(e => {
-                tsv += `${e.editor}\t${e.textUrn}\t${e.betaSurface}\t${e.unicodeSurface}\t${e.betaLemma}\t${e.unicodeLemma}\t${e.lsjUrn}\t${e.pos}\t${e.case}\t${e.gender}\t${e.number}\t${e.degree}\t${e.mood}\t${e.voice}\t${e.tense}\t${e.person}\n`;
+                const ucForm = e.unicodeSurface || "";
+                const bcForm = e.betaSurface || "";
+                const ucLemma = e.unicodeLemma || "";
+                const bcLemma = e.betaLemma || "";
+                const lsj = e.lsjUrn || "";
+                const postag = e.pos || "---------";
+
+                rows += `${ucForm}\t${bcForm}\t${ucLemma}\t${bcLemma}\t${lsj}\t${postag}\n`;
             });
 
-            const blob = new Blob([tsv], { type: "text/tab-separated-values" });
-            const url = URL.createObjectURL(blob);
-
-            // File 1
+            // === File 1: Morphological Dictionary ===
+            const dictHeader = "uc-form\tbc-form\tuc-lemma\tbc-lemma\tlsj-urn\tpos-tag\n";
+            const dictContent = dictHeader + rows;
+            const dictBlob = new Blob([dictContent], { type: "text/tab-separated-values" });
+            const dictUrl = URL.createObjectURL(dictBlob);
             const a1 = document.createElement("a");
-            a1.href = url;
-            a1.download = `For_editor_index-${date}.tsv`;
+            a1.href = dictUrl;
+            a1.download = `For_morphological_dictionary_${safeEditor}_${date}.tsv`;
             a1.click();
+            URL.revokeObjectURL(dictUrl);
 
-            // File 2
+            // === File 2: Editors Index ===
+            let indexRows = "";
+            entries.forEach(e => {
+                const ucForm = e.unicodeSurface || "";
+                const bcForm = e.betaSurface || "";
+                const ucLemma = e.unicodeLemma || "";
+                const bcLemma = e.betaLemma || "";
+                const lsj = e.lsjUrn || "";
+                const postag = e.pos || "---------";
+                const tokenUrn = e.textUrn || "";
+
+                indexRows += `${tokenUrn}\t${ucForm}\t${bcForm}\t${ucLemma}\t${bcLemma}\t${lsj}\t${postag}\n`;
+            });
+
+            const indexHeader = "token-urn\tuc-form\tbc-form\tuc-lemma\tbc-lemma\tlsj-urn\tpos-tag\n";
+            const indexContent = indexHeader + indexRows;
+            const indexBlob = new Blob([indexContent], { type: "text/tab-separated-values" });
+            const indexUrl = URL.createObjectURL(indexBlob);
             const a2 = document.createElement("a");
-            a2.href = url;
-            a2.download = `morphological_data-${date}.tsv`;
+            a2.href = indexUrl;
+            a2.download = `For_editors_index_${safeEditor}_${date}.tsv`;
             a2.click();
-
-            URL.revokeObjectURL(url);
+            URL.revokeObjectURL(indexUrl);
         }
 
         // ==================== INIT ====================
         window.onload = () => {
             loadLsjUrns();
+
+            // Reliable Unicode updates (fixes the previous ReferenceError)
+            const betaSurface = document.getElementById("beta-surface");
+            const betaLemma = document.getElementById("beta-lemma");
+            betaSurface.addEventListener("input", updateUnicodeFields);
+            betaLemma.addEventListener("input", updateUnicodeFields);
+
             updatePOSTagPreview();
         };
     </script>
