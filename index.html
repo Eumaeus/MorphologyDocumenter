@@ -5,10 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MorphologyDocumenter</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="js/betareader.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500&display=swap');
         body { font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
         .greek { font-family: 'EB Garamond', serif; font-size: 1.25rem; line-height: 1.4; }
+        /* Target only disabled select elements */
+        select:disabled {
+          background-color: #f5f5f5;
+          color: #a0a0a0;
+          border-color: #d9d9d9;
+          cursor: not-allowed; /* Shows a 'block' circle on hover */
+          opacity: 1; /* Overrides default iOS/WebKit opacity reduction */
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900">
@@ -101,20 +110,20 @@
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Case</label>
                                     <select id="case-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
-                                        <option value="-">-</option><option value="nom">nom</option><option value="gen">gen</option>
-                                        <option value="dat">dat</option><option value="acc">acc</option><option value="voc">voc</option>
+                                        <option value="-">-</option><option value="nom">nominative</option><option value="gen">genitive</option>
+                                        <option value="dat">dative</option><option value="acc">accusative</option><option value="voc">vocative</option>
                                     </select>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Gender</label>
                                     <select id="gender-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
-                                        <option value="-">-</option><option value="m">m</option><option value="f">f</option><option value="n">n</option>
+                                        <option value="-">-</option><option value="m">masculine</option><option value="f">feminine</option><option value="n">neuter</option>
                                     </select>
                                 </div>
                                 <div class="flex flex-col">
                                     <label class="text-xs font-medium text-slate-500 mb-1">Number</label>
                                     <select id="number-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
-                                        <option value="-">-</option><option value="s">s</option><option value="d">d</option><option value="p">p</option>
+                                        <option value="-">-</option><option value="s">singular</option><option value="d">dual</option><option value="p">plural</option>
                                     </select>
                                 </div>
                                 <div class="flex flex-col">
@@ -141,7 +150,7 @@
                                     <label class="text-xs font-medium text-slate-500 mb-1">Tense</label>
                                     <select id="tense-select" onchange="updatePOSTagPreview()" class="px-3 py-2 border border-slate-300 rounded-lg" disabled>
                                         <option value="-">-</option><option value="pres">present</option><option value="impf">imperfect</option>
-                                        <option value="fut">future</option><option value="aor">aorist</option><option value="perf">perfect</option>
+                                        <option value="fut">future</option><option value="aor">aorist</option><option value="perf">perfect</option><option value="plpf">pluperfect</option><option value="futperf">future perfect</option>
                                     </select>
                                 </div>
                                 <div class="flex flex-col">
@@ -209,39 +218,10 @@
         // ==================== BETA CODE → UNICODE (YOUR UPDATED VERSION) ====================
         function betaToUnicode(beta) {
             if (!beta || typeof beta !== "string") return "";
+            let br  = new betareader(); 
             let input = beta.trim();
-            let result = "";
-            let i = 0;
-
-            const letterMap = {
-                "a":"α","b":"β","g":"γ","d":"δ","e":"ε","z":"ζ","h":"η","q":"θ","i":"ι","k":"κ","l":"λ","m":"μ","n":"ν","c":"ξ","o":"ο","p":"π","r":"ρ","s":"σ","t":"τ","u":"υ","f":"φ","x":"χ","y":"ψ","w":"ω",
-                "A":"Α","B":"Β","G":"Γ","D":"Δ","E":"Ε","Z":"Ζ","H":"Η","Q":"Θ","I":"Ι","K":"Κ","L":"Λ","M":"Μ","N":"Ν","C":"Ξ","O":"Ο","P":"Π","R":"Ρ","S":"Σ","T":"Τ","U":"Υ","F":"Φ","X":"Χ","Y":"Ψ","W":"Ω"
-            };
-
-            while (i < input.length) {
-                let ch = input[i];
-                if (ch === "*") { i++; if (i < input.length) ch = input[i].toUpperCase(); else break; }
-                if (letterMap[ch]) {
-                    result += letterMap[ch];
-                    i++;
-                    if (i < input.length) {
-                        let next = input[i];
-                        let base = result.slice(-1);
-                        if (next === ")") { result = result.slice(0,-1) + (base + "\u0313").normalize("NFC"); i++; }
-                        else if (next === "(") { result = result.slice(0,-1) + (base + "\u0314").normalize("NFC"); i++; }
-                        else if (next === "\\") { result = result.slice(0,-1) + (base + "\u0340").normalize("NFC"); i++; }
-                        else if (next === "/") { result = result.slice(0,-1) + (base + "\u0301").normalize("NFC"); i++; }
-                        else if (next === "=") { result = result.slice(0,-1) + (base + "\u0342").normalize("NFC"); i++; }
-                        else if (next === "|") { result = result.slice(0,-1) + (base + "\u0345").normalize("NFC"); i++; }
-                    }
-                } else {
-                    result += ch; i++;
-                }
-            }
-
-            // TERMINAL SIGMA
-            if (result.endsWith("σ")) result = result.slice(0, -1) + "ς";
-            return result;
+            let output = br.transcodeGreek(input);
+            return output;
         }
 
         function updateUnicodeFields() {
@@ -447,11 +427,14 @@
 
             // === File 1: Morphological Dictionary ===
             const dictHeader = "uc-form\tbc-form\tuc-lemma\tbc-lemma\tlsj-urn\tpos-tag\n";
-            const dictContent = dictHeader + rows;
+            // We don't actually want a header
+            // const dictContent = dictHeader + rows;
+            const dictContent = rows;
             const dictBlob = new Blob([dictContent], { type: "text/tab-separated-values" });
             const dictUrl = URL.createObjectURL(dictBlob);
             const a1 = document.createElement("a");
             a1.href = dictUrl;
+            console.log("downloading first.For_morph…")
             a1.download = `For_morphological_dictionary_${safeEditor}_${date}.tsv`;
             a1.click();
             URL.revokeObjectURL(dictUrl);
@@ -471,11 +454,14 @@
             });
 
             const indexHeader = "token-urn\tuc-form\tbc-form\tuc-lemma\tbc-lemma\tlsj-urn\tpos-tag\n";
-            const indexContent = indexHeader + indexRows;
+            //const indexContent = indexHeader + indexRows;
+            const indexContent = indexRows;
             const indexBlob = new Blob([indexContent], { type: "text/tab-separated-values" });
             const indexUrl = URL.createObjectURL(indexBlob);
             const a2 = document.createElement("a");
             a2.href = indexUrl;
+
+            console.log("downloading second. For_morph…")
             a2.download = `For_editors_index_${safeEditor}_${date}.tsv`;
             a2.click();
             URL.revokeObjectURL(indexUrl);
@@ -484,6 +470,10 @@
         // ==================== INIT ====================
         window.onload = () => {
             loadLsjUrns();
+
+            // Select the text-urn field, for easy pasting over the default
+            const textUrnField = document.getElementById('text-urn');
+            textUrnField.select(); 
 
             // Reliable Unicode updates (fixes the previous ReferenceError)
             const betaSurface = document.getElementById("beta-surface");
