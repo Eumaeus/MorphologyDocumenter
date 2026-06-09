@@ -434,7 +434,7 @@
                 } else if (mood === "n") {
                     ["voice","tense"].forEach(id => document.getElementById(id+"-select").disabled = false);
                 } else if (mood === "p") {
-                    ["voice","tense","person","case","number", "gender"].forEach(id => document.getElementById(id+"-select").disabled = false);
+                    ["voice","tense","case","number", "gender"].forEach(id => document.getElementById(id+"-select").disabled = false);
                 }
             } else if (pos === "d") {
                 document.getElementById("degree-select").disabled = false;
