@@ -12,8 +12,9 @@ It is a string 9 characters long, and corresponds to the following morphological
 - v	verb
 - t	participle
 - a	adjective
-- l	article
 - d	adverb
+- l	article
+- g	particle
 - c	conjunction
 - r	preposition
 - p	pronoun
