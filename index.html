@@ -558,7 +558,7 @@
             const editor = document.getElementById("editor-name").value.trim() || "editor";
             const safeEditor = editor.replace(/[^a-zA-Z0-9]/g, "_");
             const date = new Date().toISOString().split("T")[0];
-            const longerdate = date + "-" + new Date().toISOString().split("T")[1].split(":")[0];
+            const longerdate = date + "-" + new Date().toISOString().split("T")[1].split(":")[0]+new Date().toISOString().split("T")[1].split(":")[1];
 
             // Build rows (same data for both files)
             let rows = "";
