@@ -344,6 +344,11 @@
             let br  = new betareader(); 
             let input = beta.trim();
             let output = br.transcodeGreek(input);
+
+           // if (beta.includes("*s") || beta.includes("*S")) {
+           //     output = output.replace(/^[σς]/, "Σ"); 
+           // }
+
             return output;
         }
 
