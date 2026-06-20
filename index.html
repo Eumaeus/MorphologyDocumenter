@@ -586,7 +586,7 @@
             const dictUrl = URL.createObjectURL(dictBlob);
             const a1 = document.createElement("a");
             a1.href = dictUrl;
-            a1.download = `NEW_user_morphology_${safeEditor}_${longerdate}.tsv`;
+            a1.download = `user_morphology_${safeEditor}_${longerdate}.tsv`;
             a1.click();
             URL.revokeObjectURL(dictUrl);
 
